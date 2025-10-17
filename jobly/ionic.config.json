@@ -1,0 +1,7 @@
+{
+  "name": "jobly",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

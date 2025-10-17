@@ -1,0 +1,107 @@
+
+
+<ion-content [fullscreen]="true" class="ion-padding login-content">
+  <div class="login-container">
+    <div class="logo-wrapper" style="padding-bottom: 40px; padding-top: 40px;">
+      <img src="assets/icon/jobber.png" alt="Logo" class="login-logo" />
+    </div>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title class="ion-text-center">Welcome to our App</ion-card-title>
+        <ion-card-subtitle class="ion-text-center">Please Create you Account</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <p class="muted">Create an account to find work or hire workers. It only takes a minute.</p>
+        <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+          <ion-item lines="none" class="input-item">
+            <ion-icon name="mail-outline" slot="start" class="input-icon"></ion-icon>
+            <ion-label position="floating">Username</ion-label>
+            <ion-input type="username" formControlName="username"></ion-input>
+          </ion-item>
+          <ion-note color="danger" *ngIf="signupForm.get('username')?.touched && signupForm.get('username')?.invalid">
+            Please enter a valid username
+          </ion-note>
+          <ion-item lines="none" class="input-item">
+            <ion-icon name="mail-outline" slot="start" class="input-icon"></ion-icon>
+            <ion-label position="floating">first Name</ion-label>
+            <ion-input type="text" formControlName="first_name"></ion-input>
+          </ion-item>
+          <ion-item lines="none" class="input-item">
+            <ion-icon name="mail-outline" slot="start" class="input-icon"></ion-icon>
+            <ion-label position="floating">last Name</ion-label>
+            <ion-input type="text" formControlName="last_name"></ion-input>
+          </ion-item>
+          <ion-item lines="none" class="input-item">
+            <ion-icon name="lock-closed-outline" slot="start" class="input-icon"></ion-icon>
+            <ion-label position="floating">Password</ion-label>
+            <ion-input type="password" formControlName="password"></ion-input>
+          </ion-item>
+          <ion-note color="danger" *ngIf="signupForm.get('password')?.touched && signupForm.get('password')?.invalid">
+            Password is required
+          </ion-note>
+
+          <ion-item lines="none" class="input-item">
+            <ion-icon name="lock-closed-outline" slot="start" class="input-icon"></ion-icon>
+            <ion-label position="floating">Confirm Password</ion-label>
+            <ion-input type="password" formControlName="confirmPassword"></ion-input>
+          </ion-item>
+          <ion-note color="danger" *ngIf="signupForm.get('confirmPassword')?.touched && signupForm.get('confirmPassword')?.invalid">
+            Confirm password is required
+          </ion-note>
+
+          <ion-note color="danger" *ngIf="signupForm.errors?.['passwordMismatch'] && (signupForm.get('confirmPassword')?.touched || signupForm.get('password')?.touched)">
+            Passwords do not match
+          </ion-note>
+          <ion-label style="padding:20px; margin: 50px;">Are you looking for:</ion-label>
+          <ion-radio-group formControlName="role">
+            <ion-item lines="none" class="input-item">
+              <ion-label>Workers</ion-label>
+              <ion-radio slot="end" value="recruiter"></ion-radio>
+            </ion-item>
+
+            <ion-item lines="none" class="input-item">
+              <ion-label>work</ion-label>
+              <ion-radio slot="end" value="candidate"></ion-radio>
+            </ion-item>
+          </ion-radio-group>
+
+          <!-- Show enterprise name when role is 'workers' -->
+          <div *ngIf="signupForm.get('role')?.value === 'recruiter'">
+            <ion-item lines="none" class="input-item">
+              <ion-icon name="business-outline" slot="start" class="input-icon"></ion-icon>
+              <ion-label position="floating">Enterprise Name</ion-label>
+              <ion-input type="text" formControlName="company_name"></ion-input>
+            </ion-item>
+          </div>
+
+          <!-- Show CV upload when role is 'work' -->
+          <div *ngIf="signupForm.get('role')?.value === 'candidate'">
+            <ion-item lines="none" class="input-item">
+              <ion-label>Upload CV</ion-label>
+              <input type="file" accept=".pdf,.doc,.docx" (change)="onFileSelected($event)" />
+            </ion-item>
+            <ion-note color="medium" *ngIf="cvName">
+              Selected file: {{ cvName }}
+            </ion-note>
+          </div>
+          <ion-button expand="block" type="submit" [disabled]="signupForm.invalid" class="ion-margin-top login-btn">
+            Create account
+          </ion-button>
+        </form>
+
+        <div class="divider">
+          <span>or</span>
+        </div>
+
+       <ion-note color="danger" *ngIf="signupError" style="margin-bottom: 10px;">
+  {{ signupError }}
+</ion-note>
+
+        <div class="ion-text-center ion-margin-top">
+          <span>Already Have an Account?</span>
+          <ion-button fill="clear" size="small" type="button" (click)="onLogin()" >Login here!</ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
