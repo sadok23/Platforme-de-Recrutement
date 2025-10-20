@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>My Applications</ion-title>
+    <ion-button slot="start" fill="clear" (click)="back()">Back</ion-button>
+  </ion-toolbar>
+  </ion-header>
+
+<ion-content>
+  <div class="ion-padding">
+    <ion-badge color="primary">{{ applications.length || 0 }} applications</ion-badge>
+
+    <ion-list *ngIf="applications.length; else empty">
+      <ion-item *ngFor="let app of applications">
+        <ion-label>
+          <h2>{{ app.job_detail?.title || 'Job #'+app.job }}</h2>
+          <p>{{ app.job_detail?.location }} • {{ app.job_detail?.salary | currency:'USD':'symbol' }}</p>
+          <p>Applied: {{ app.date_applied | date:'medium' }}</p>
+        </ion-label>
+        <ion-badge slot="end" [color]="app.status === 'accepted' ? 'success' : app.status === 'rejected' ? 'danger' : 'warning'">
+          {{ app.status }}
+        </ion-badge>
+      </ion-item>
+    </ion-list>
+
+    <ng-template #empty>
+      <p>You have not applied to any jobs yet.</p>
+    </ng-template>
+  </div>
+</ion-content>
+
+
