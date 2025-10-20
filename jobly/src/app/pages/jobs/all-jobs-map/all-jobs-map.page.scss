@@ -1,0 +1,21 @@
+.job-marker:hover {
+  transform: scale(1.2);
+  transition: transform 0.2s;
+}
+/* Ensure the map fills all available space */
+.map-content {
+  --padding-top: 0;
+  --padding-bottom: 0;
+    width: 100%;
+    height: 2000000000px; 
+}
+
+
+ion-content, #jobs-map {
+  width: 100%;
+  height: 100%;
+}
+
+#jobs-map {
+  display: block;
+}

@@ -1,0 +1,37 @@
+
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Applications for {{ job?.title || 'Job #' + jobId }}</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>  </ion-toolbar>  
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding">
+    <ion-badge color="primary">{{ applications.length || 0 }} applications</ion-badge>
+
+    <ion-list *ngIf="applications.length; else empty">
+      <ion-item *ngFor="let app of applications">
+        <ion-label>
+          <h2>Candidate #{{ app.candidate }}</h2>
+          <h2>{{ app.candidate_detail?.first_name }} {{ app.candidate_detail?.last_name }} ({{ app.candidate_detail?.username }})</h2>
+          <p>Applied: {{ app.date_applied | date:'medium' }}</p>
+          <p *ngIf="app.candidate_detail?.cv">
+            <a [href]="app.candidate_detail?.cv || '#'" target="_blank" rel="noopener">View CV</a>
+          </p>
+        </ion-label>
+        <ion-select slot="end" interface="popover" [value]="app.status" [disabled]="saving[app.id!]"
+          (ionChange)="setStatus(app, $event.detail.value)">
+          <ion-select-option value="pending">Pending</ion-select-option>
+          <ion-select-option value="accepted">Accepted</ion-select-option>
+          <ion-select-option value="rejected">Rejected</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+
+    <ng-template #empty>
+      <p>No applications for this job yet.</p>
+    </ng-template>
+  </div>
+</ion-content>
