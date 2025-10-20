@@ -1,0 +1,33 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Recruiter Home</ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="medium" (click)="logout()">Logout</ion-button>
+      <ion-button color="primary" (click)="onAddJob()">Add Job</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Recruiter Home</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <div class="ion-padding">
+    <h2 *ngIf="userFullName">Welcome, {{ userFullName }}!</h2>
+    <ion-list *ngIf="jobs?.length; else emptyState">
+      <ion-item *ngFor="let job of jobs" (click)="viewApplications(job)">
+        <ion-label>
+          <h2>{{ job.title }}</h2>
+          <p>{{ job.location }} • {{ job.salary | currency:'USD':'symbol' }}</p>
+        </ion-label>
+        <ion-button slot="end" color="danger" [disabled]="deleting[job.id!]" (click)="deleteJob(job); $event.stopPropagation()">Delete</ion-button>
+      </ion-item>
+    </ion-list>
+    <ng-template #emptyState>
+      <p>No jobs yet. Click "Add Job" to create your first job.</p>
+    </ng-template>
+  </div>
+</ion-content>
