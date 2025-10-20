@@ -1,0 +1,8 @@
+.bird-img {
+    height: 24px;           /* make it smaller */
+    width: auto;
+    object-fit: contain;
+    transform: scaleX(-1);  /* flip horizontally */
+    margin-left: 10px;
+  }
+  

@@ -1,0 +1,70 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <img src="assets/bird.png" class="bird-img" (click)="flappy()" />
+    </ion-buttons>
+
+
+    <ion-buttons slot="end">
+      <ion-button color="medium" (click)="viewApplications()">My Applications</ion-button>
+      <ion-button color="medium" (click)="logout()">Logout</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Candidate Home</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="ion-padding">
+    <h2 *ngIf="userFullName">Welcome, {{ userFullName }}!</h2>
+    <ion-button expand="block" color="primary" (click)="gotoMap()">View Jobs on Map</ion-button>
+    <ion-button expand="block" color="tertiary" (click)="toggleNotifications()">
+      Notifications ({{ notifications.length }})
+    </ion-button>
+
+    <ion-list *ngIf="showNotifications && notifications.length">
+      <ion-item *ngFor="let n of notifications">
+        <ion-label>
+          <h3>{{ n.title }}</h3>
+          <p>{{ n.body }}</p>
+          <small>{{ n.created_at | date:'short' }}</small>
+        </ion-label>
+        <ion-button fill="clear" color="success" size="small" (click)="markAsRead(n.id)">
+          Mark as Read
+        </ion-button>
+        <ion-button fill="clear" color="danger" size="small" (click)="deleteNotification(n.id)">
+          Delete
+        </ion-button>
+      </ion-item>
+    </ion-list>
+
+    <ion-badge color="primary">{{ filteredJobs.length || 0 }} jobs</ion-badge>
+
+    <ion-searchbar placeholder="Search keywords (title or description)" (ionInput)="onKeywordChange($event)"></ion-searchbar>
+
+    <ion-list *ngIf="filteredJobs.length; else empty">
+      <ion-item *ngFor="let job of pagedJobs" >
+        <ion-label>
+          <h2>{{ job.title }}</h2>
+          <p>{{ job.location }} • {{ job.salary | currency:'USD':'symbol' }}</p>
+          <p>{{ job.description }}</p>
+        </ion-label>
+        <ion-button slot="end" color="success" (click)="gotoJob(job); $event.stopPropagation()">View</ion-button>
+      </ion-item>
+    </ion-list>
+
+    <div class="ion-text-center" *ngIf="filteredJobs.length">
+      <ion-button fill="clear" [disabled]="currentPage === 1" (click)="updatePage(currentPage - 1)">Prev</ion-button>
+      <span>Page {{ currentPage }} / {{ totalPages() }}</span>
+      <ion-button fill="clear" [disabled]="currentPage >= totalPages()" (click)="updatePage(currentPage + 1)">Next</ion-button>
+    </div>
+
+    <ng-template #empty>
+      <p>No jobs found.</p>
+    </ng-template>
+  </div>
+</ion-content>
